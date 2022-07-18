@@ -1,27 +1,21 @@
 import { Observer } from "./observer";
+import { Subscribable, SubscriberSource } from "./subscribable";
+import { Subscriber } from "./subscriber";
 import { Subscription } from "./subscription";
 import { TeardownLogic } from "./teardown-logic";
-
-export interface Subscriber<T> {
-    next: Observer<T>["next"];
-    error: Observer<T>["error"];
-    complete: Observer<T>["complete"];
-}
 
 export interface ObservableFactory<T> {
     (subscriber: Subscriber<T>): Subscription | TeardownLogic | void;
 }
 
-export class Observable<T> {
+export class Observable<T> implements Subscribable<T> {
     #factory: ObservableFactory<T>;
 
     constructor(factory: ObservableFactory<T>) {
         this.#factory = factory;
     }
 
-    subscribe(
-        subscriber?: Parameters<Observer<T>["subscribe"]>[0],
-    ): Subscription {
+    subscribe(subscriber?: SubscriberSource<T>): Subscription {
         const observer = new Observer<T>();
         const observerSubscription = observer.subscribe(subscriber);
 

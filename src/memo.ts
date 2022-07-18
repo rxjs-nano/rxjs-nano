@@ -2,18 +2,8 @@ import { Observer } from "./observer";
 import { SubscriberSource } from "./subscribable";
 import { Subscription } from "./subscription";
 
-export class Store<T> extends Observer<T> {
-    get value() {
-        return this.#value;
-    }
-
-    #value: T;
-
-    constructor(initial: T) {
-        super();
-
-        this.#value = initial;
-    }
+export class Memo<T> extends Observer<T> {
+    #value?: T;
 
     next(value: T): void {
         this.#value = value;
@@ -24,7 +14,7 @@ export class Store<T> extends Observer<T> {
     subscribe(subscriber?: SubscriberSource<T>): Subscription {
         const subscription = super.subscribe(subscriber);
 
-        this.next(this.#value);
+        if (typeof this.#value !== "undefined") this.next(this.#value);
 
         return subscription;
     }

@@ -1,7 +1,8 @@
-import { Subscriber } from "./observable";
+import { Subscribable, SubscriberSource } from "./subscribable";
+import { Subscriber } from "./subscriber";
 import { Subscription } from "./subscription";
 
-export class Observer<T> {
+export class Observer<T> implements Subscribable<T> {
     get closed() {
         return this.#closed;
     }
@@ -35,9 +36,7 @@ export class Observer<T> {
         callbacks.forEach((callback) => callback());
     }
 
-    subscribe(
-        subscriber?: Subscriber<T>["next"] | Partial<Subscriber<T>>,
-    ): Subscription {
+    subscribe(subscriber?: SubscriberSource<T>): Subscription {
         const item: ObserverItem<T> = {
             a: createSubscriber<T>(subscriber),
             b: new Subscription(() => {
