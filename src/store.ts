@@ -1,4 +1,6 @@
+import { Subscriber } from "./observable";
 import { Observer } from "./observer";
+import { Subscription } from "./subscription";
 
 export class Store<T> extends Observer<T> {
     get value() {
@@ -17,5 +19,15 @@ export class Store<T> extends Observer<T> {
         this.#value = value;
 
         super.next(value);
+    }
+
+    subscribe(
+        subscriber?: ((value: T) => void) | Partial<Subscriber<T>> | undefined,
+    ): Subscription {
+        const subscription = super.subscribe(subscriber);
+
+        this.next(this.#value);
+
+        return subscription;
     }
 }

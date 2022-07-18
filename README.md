@@ -25,6 +25,8 @@ observable.subscribe({
 
 ### Event
 
+An Event is the same as an RxJS Subject
+
 ```ts
 import { Event } from "rxjs-nano";
 
@@ -35,6 +37,8 @@ event.emit("text");
 ```
 
 ### Store
+
+A Store is the same as an RxJS BehaviorSubject
 
 ```ts
 import { Store } from "rxjs-nano";

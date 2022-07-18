@@ -16,7 +16,7 @@ describe("observable-003.test", () => {
         expect(next).toHaveBeenCalled();
         expect(complete).toHaveBeenCalled();
 
-        expect(next.mock.calls.length === 1);
+        expect(next.mock.calls.length).toBe(1);
     });
 
     test("test-02", () => {
