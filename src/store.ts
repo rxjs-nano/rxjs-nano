@@ -1,5 +1,5 @@
 import { Observer } from "./observer";
-import { SubscriberSource } from "./subscribable";
+import { Subscriber, SubscriberSource } from "./subscriber";
 import { Subscription } from "./subscription";
 
 export class Store<T> extends Observer<T> {
@@ -22,9 +22,11 @@ export class Store<T> extends Observer<T> {
     }
 
     subscribe(subscriber?: SubscriberSource<T>): Subscription {
+        subscriber = new Subscriber<T>(subscriber);
+
         const subscription = super.subscribe(subscriber);
 
-        this.next(this.#value);
+        (subscriber as Subscriber<T>).next(this.#value);
 
         return subscription;
     }

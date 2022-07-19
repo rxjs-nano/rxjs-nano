@@ -1,5 +1,5 @@
 import { Observer } from "./observer";
-import { SubscriberSource } from "./subscribable";
+import { Subscriber, SubscriberSource } from "./subscriber";
 import { Subscription } from "./subscription";
 
 export class Memo<T> extends Observer<T> {
@@ -12,9 +12,12 @@ export class Memo<T> extends Observer<T> {
     }
 
     subscribe(subscriber?: SubscriberSource<T>): Subscription {
+        subscriber = new Subscriber<T>(subscriber);
+
         const subscription = super.subscribe(subscriber);
 
-        if (typeof this.#value !== "undefined") this.next(this.#value);
+        if (typeof this.#value !== "undefined")
+            (subscriber as Subscriber<T>).next(this.#value);
 
         return subscription;
     }

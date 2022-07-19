@@ -14,4 +14,21 @@ describe("memo-001", () => {
 
         expect(next).toHaveBeenCalled();
     });
+
+    test("test-02", () => {
+        const nextA = jest.fn();
+        const nextB = jest.fn();
+
+        const memo = new Memo<number>();
+
+        memo.subscribe(nextA);
+
+        memo.next(42);
+
+        expect(nextA).toHaveBeenCalled();
+
+        memo.subscribe(nextB);
+
+        expect(nextB).toHaveBeenCalled();
+    });
 });

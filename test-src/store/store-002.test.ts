@@ -17,4 +17,18 @@ describe("store-002.test", () => {
 
         expect(actualValue).toBe(value);
     });
+
+    test("test-01", () => {
+        const value = 42;
+        const store = new Store(value);
+
+        const nextA = jest.fn();
+        const nextB = jest.fn();
+
+        store.subscribe(nextA);
+        store.subscribe(nextB);
+
+        expect(nextA.mock.calls[0][0]).toBe(value);
+        expect(nextB.mock.calls[0][0]).toBe(value);
+    });
 });

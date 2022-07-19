@@ -1,6 +1,6 @@
 import { Observer } from "./observer";
-import { Subscribable, SubscriberSource } from "./subscribable";
-import { Subscriber } from "./subscriber";
+import { Subscribable } from "./subscribable";
+import { Subscriber, SubscriberSource } from "./subscriber";
 import { Subscription } from "./subscription";
 import { TeardownLogic } from "./teardown-logic";
 

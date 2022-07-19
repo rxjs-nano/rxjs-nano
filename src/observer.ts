@@ -1,8 +1,8 @@
-import { Subscribable, SubscriberSource } from "./subscribable";
-import { Subscriber } from "./subscriber";
+import { Subscribable } from "./subscribable";
+import { Subscriber, SubscriberSource } from "./subscriber";
 import { Subscription } from "./subscription";
 
-export class Observer<T> implements Subscribable<T> {
+export class Observer<T> implements Subscriber<T>, Subscribable<T> {
     get closed() {
         return this.#closed;
     }
@@ -38,7 +38,7 @@ export class Observer<T> implements Subscribable<T> {
 
     subscribe(subscriber?: SubscriberSource<T>): Subscription {
         const item: ObserverItem<T> = {
-            a: createSubscriber<T>(subscriber),
+            a: new Subscriber<T>(subscriber),
             b: new Subscription(() => {
                 this.#items.delete(item);
 
@@ -63,23 +63,6 @@ export class Observer<T> implements Subscribable<T> {
         this.#items.forEach(({ b }) => b.unsubscribe());
         this.#items.clear();
     }
-}
-
-function createSubscriber<T>(
-    observer: Parameters<Observer<T>["subscribe"]>[0],
-): Subscriber<T> {
-    const source: Partial<Observer<T>> =
-        typeof observer === "function" ? { next: observer } : observer || {};
-
-    return {
-        next: fn(source.next),
-        error: fn(source.error),
-        complete: fn(source.complete),
-    };
-}
-
-function fn<T extends (...args: any[]) => void>(source?: T): T {
-    return typeof source === "function" ? source : ((() => {}) as any);
 }
 
 interface ObserverItem<T> {
