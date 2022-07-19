@@ -1,11 +1,11 @@
-import { Observable } from "../../package/observable";
+import { observable } from "../../package/observable";
 
 describe("observable-001.test", () => {
     test("test-01", () => {
         const teardown = jest.fn();
         const factory = jest.fn(() => teardown);
 
-        new Observable(factory);
+        observable(factory);
 
         expect(factory).not.toHaveBeenCalled();
         expect(teardown).not.toHaveBeenCalled();
@@ -15,9 +15,7 @@ describe("observable-001.test", () => {
         const teardown = jest.fn();
         const factory = jest.fn(() => teardown);
 
-        const observable = new Observable(factory);
-
-        const subscription = observable.subscribe();
+        const subscription = observable(factory).subscribe();
 
         expect(factory).toHaveBeenCalled();
         expect(teardown).not.toHaveBeenCalled();

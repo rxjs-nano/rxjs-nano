@@ -3,14 +3,16 @@
 ![test: passed](https://raw.githubusercontent.com/rxjs-nano/rxjs-nano/main/badges/test.svg)
 ![license: MIT](https://raw.githubusercontent.com/rxjs-nano/rxjs-nano/main/badges/license.svg)
 
-## Examples
+## API
 
 ### Observable
 
-```ts
-import { Observable } from "rxjs-nano";
+The Observable type is an interface. To instantiate an Observable use a function `observable`.
 
-const observable = new Observable(({ complete }) => {
+```ts
+import { observable, Observable } from "rxjs-nano";
+
+const second: Observable<void> = observable(({ complete }) => {
     const id = setTimeout(complete, 1000);
 
     return () => clearTimeout(id);
@@ -21,6 +23,20 @@ observable.subscribe({
         // ...
     },
 });
+```
+
+Every types implements an Observable.
+
+```ts
+import { Event, Memo, observable, Observable, Store } from "rxjs-nano";
+
+const observableA: Observable<number> = observable(({ next, complete }) => {
+    next(1);
+    complete();
+});
+const observableB: Observable<number> = new Event();
+const observableC: Observable<number> = new Memo();
+const observableD: Observable<number> = new Store(1);
 ```
 
 ### Event

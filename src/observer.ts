@@ -1,8 +1,8 @@
-import { Subscribable } from "./subscribable";
+import { Observable } from "./observable";
 import { Subscriber, SubscriberSource } from "./subscriber";
 import { Subscription } from "./subscription";
 
-export class Observer<T> implements Subscriber<T>, Subscribable<T> {
+export class Observer<T> implements Subscriber<T>, Observable<T> {
     get closed() {
         return this.#closed;
     }

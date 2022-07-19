@@ -3,7 +3,6 @@ export * from "./memo";
 export * from "./observable";
 export * from "./observer";
 export * from "./store";
-export * from "./subscribable";
 export * from "./subscriber";
 export * from "./subscription";
 export * from "./teardown-logic";

@@ -1,17 +1,17 @@
-import { Observable } from "../../package/observable";
+import { observable, ObservableFactory } from "../../package/observable";
 
 describe("observable-003.test", () => {
     test("test-01", () => {
         const next = jest.fn();
         const complete = jest.fn();
 
-        const observable = new Observable<void>(({ next, complete }) => {
+        const factory: ObservableFactory<void> = ({ next, complete }) => {
             next();
             complete();
             next();
-        });
+        };
 
-        observable.subscribe({ next, complete });
+        observable(factory).subscribe({ next, complete });
 
         expect(next).toHaveBeenCalled();
         expect(complete).toHaveBeenCalled();
@@ -24,13 +24,17 @@ describe("observable-003.test", () => {
         const error = jest.fn();
         const complete = jest.fn();
 
-        const observable = new Observable<void>(({ next, error, complete }) => {
+        const factory: ObservableFactory<void> = ({
+            next,
+            error,
+            complete,
+        }) => {
             error(null);
             next();
             complete();
-        });
+        };
 
-        observable.subscribe({ next, error, complete });
+        observable(factory).subscribe({ next, error, complete });
 
         expect(error).toHaveBeenCalled();
 

@@ -1,17 +1,17 @@
-import { Observable } from "../../package/observable";
+import { observable, ObservableFactory } from "../../package/observable";
 
 describe("observable-002.test", () => {
     test("test-01", () => {
         const teardown = jest.fn();
         const complete = jest.fn();
 
-        const observable = new Observable(({ complete }) => {
+        const factory: ObservableFactory<void> = ({ complete }) => {
             complete();
 
             return teardown;
-        });
+        };
 
-        observable.subscribe({ complete });
+        observable(factory).subscribe({ complete });
 
         expect(complete).toHaveBeenCalled();
         expect(teardown).toHaveBeenCalled();
@@ -21,9 +21,9 @@ describe("observable-002.test", () => {
         const teardown = jest.fn();
         const complete = jest.fn();
 
-        const observable = new Observable(() => teardown);
-
-        observable.subscribe({ complete }).unsubscribe();
+        observable(() => teardown)
+            .subscribe({ complete })
+            .unsubscribe();
 
         expect(teardown).toHaveBeenCalled();
         expect(complete).not.toHaveBeenCalled();
